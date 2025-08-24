@@ -1,5 +1,7 @@
 package com.tajutechgh;
 
+import com.tajutechgh.utils.ViewNavigator;
+import com.tajutechgh.views.LonginView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
@@ -10,10 +12,10 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        Scene scene = new Scene(new VBox(), 300, 300);
+        stage.setTitle("Expense Tracker");
 
-        stage.setTitle("Mohammed Abdul-Aziz");
-        stage.setScene(scene);
-        stage.show();
+        ViewNavigator.setMainStage(stage);
+
+        new LonginView().show();
     }
 }
