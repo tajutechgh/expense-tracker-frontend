@@ -1,5 +1,6 @@
 package com.tajutechgh.view;
 
+import com.tajutechgh.controller.RegistrationController;
 import com.tajutechgh.util.Utilities;
 import com.tajutechgh.util.ViewNavigator;
 import javafx.geometry.Pos;
@@ -17,14 +18,16 @@ public class RegisterView {
     private TextField userNameField = new TextField();
     private PasswordField passwordField = new PasswordField();
     private PasswordField repeatPasswordField = new PasswordField();
-    private Button loginButton = new Button("Register");
-    private Label signupLabel = new Label("Already have an account? Login here");
+    private Button registerButton = new Button("Register");
+    private Label loginLabel = new Label("Already have an account? Login here");
 
     public void show(){
 
         Scene scene = creatScene();
 
         scene.getStylesheets().add(getClass().getResource( "/static/style.css").toExternalForm());
+
+        new RegistrationController(this);
 
         ViewNavigator.switchViews(scene);
     }
@@ -70,18 +73,18 @@ public class RegisterView {
         repeatPasswordField.setPromptText("Repeat Password");
         repeatPasswordField.setMaxWidth(473);
 
-        loginButton.getStyleClass().addAll("text-size-lg", "bg-light-blue", "text-white", "text-weight-700", "rounded-border");
-        loginButton.setMaxWidth(473);
+        registerButton.getStyleClass().addAll("text-size-lg", "bg-light-blue", "text-white", "text-weight-700", "rounded-border");
+        registerButton.setMaxWidth(473);
 
-        signupLabel.getStyleClass().addAll("text-size-md", "text-light-gray", "text-underline", "link-text");
+        loginLabel.getStyleClass().addAll("text-size-md", "text-light-gray", "text-underline", "link-text");
 
         registrationForm.getChildren().addAll(
                 nameField,
                 userNameField,
                 passwordField,
                 repeatPasswordField,
-                loginButton,
-                signupLabel
+                registerButton,
+                loginLabel
         );
 
         return registrationForm;
@@ -127,19 +130,19 @@ public class RegisterView {
         this.repeatPasswordField = repeatPasswordField;
     }
 
-    public Button getLoginButton() {
-        return loginButton;
+    public Button getRegisterButton() {
+        return registerButton;
     }
 
-    public void setLoginButton(Button loginButton) {
-        this.loginButton = loginButton;
+    public void setRegisterButton(Button registerButton) {
+        this.registerButton = registerButton;
     }
 
-    public Label getSignupLabel() {
-        return signupLabel;
+    public Label getLoginLabel() {
+        return loginLabel;
     }
 
-    public void setSignupLabel(Label signupLabel) {
-        this.signupLabel = signupLabel;
+    public void setLoginLabel(Label loginLabel) {
+        this.loginLabel = loginLabel;
     }
 }

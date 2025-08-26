@@ -30,7 +30,7 @@ public class LoginController {
             @Override
             public void handle(MouseEvent mouseEvent) {
 
-                if (!validateUser()) return;
+                isUserValidated();
 
                 String email = longinView.getUserNameField().getText();
                 String password = longinView.getPasswordField().getText();
@@ -72,18 +72,19 @@ public class LoginController {
         });
     }
 
-    private boolean validateUser() {
+    private void  isUserValidated() {
 
         if (longinView.getUserNameField().getText().isEmpty()){
 
-            return false;
+            Utilities.showAlertDialog(Alert.AlertType.WARNING, "Username cannot be empty !!!");
+
+            return;
         }
 
         if (longinView.getPasswordField().getText().isEmpty()){
 
-            return false;
-        }
+            Utilities.showAlertDialog(Alert.AlertType.WARNING, "Password cannot be empty !!!");
 
-        return true;
+        }
     }
 }
