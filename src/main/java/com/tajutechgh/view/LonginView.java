@@ -1,7 +1,8 @@
-package com.tajutechgh.views;
+package com.tajutechgh.view;
 
-import com.tajutechgh.utils.Utilities;
-import com.tajutechgh.utils.ViewNavigator;
+import com.tajutechgh.controller.LoginController;
+import com.tajutechgh.util.Utilities;
+import com.tajutechgh.util.ViewNavigator;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,13 +17,15 @@ public class LonginView {
     private TextField userNameField = new TextField();
     private PasswordField passwordField = new PasswordField();
     private Button loginButton = new Button("Login");
-    private Label signupLabel = new Label("Don't have an account? Click Here");
+    private Label signupLabel = new Label("Don't have an account? Register here");
 
     public void show(){
 
         Scene scene = creatScene();
 
         scene.getStylesheets().add(getClass().getResource( "/static/style.css").toExternalForm());
+
+        new LoginController(this);
 
         ViewNavigator.switchViews(scene);
     }
@@ -73,5 +76,45 @@ public class LonginView {
         );
 
         return loginFormBox;
+    }
+
+    public Label getExpenseTrackerLabel() {
+        return expenseTrackerLabel;
+    }
+
+    public void setExpenseTrackerLabel(Label expenseTrackerLabel) {
+        this.expenseTrackerLabel = expenseTrackerLabel;
+    }
+
+    public TextField getUserNameField() {
+        return userNameField;
+    }
+
+    public void setUserNameField(TextField userNameField) {
+        this.userNameField = userNameField;
+    }
+
+    public PasswordField getPasswordField() {
+        return passwordField;
+    }
+
+    public void setPasswordField(PasswordField passwordField) {
+        this.passwordField = passwordField;
+    }
+
+    public Button getLoginButton() {
+        return loginButton;
+    }
+
+    public void setLoginButton(Button loginButton) {
+        this.loginButton = loginButton;
+    }
+
+    public Label getSignupLabel() {
+        return signupLabel;
+    }
+
+    public void setSignupLabel(Label signupLabel) {
+        this.signupLabel = signupLabel;
     }
 }

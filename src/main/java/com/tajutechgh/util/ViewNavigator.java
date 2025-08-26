@@ -1,4 +1,4 @@
-package com.tajutechgh.utils;
+package com.tajutechgh.util;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
