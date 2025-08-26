@@ -39,7 +39,7 @@ public class LonginView {
 
         expenseTrackerLabel.getStyleClass().addAll("header", "text-white");
 
-        VBox loginFormBox = createLoginFormBox();
+        VBox loginFormBox = createLoginForm();
 
         mainContainerBox.getChildren().addAll(
                 expenseTrackerLabel,
@@ -49,7 +49,7 @@ public class LonginView {
         return new Scene(mainContainerBox, Utilities.APP_WIDTH, Utilities.APP_HEIGHT);
     }
 
-    private VBox createLoginFormBox(){
+    private VBox createLoginForm(){
 
         VBox loginFormBox = new VBox(51);
 

@@ -3,6 +3,7 @@ package com.tajutechgh.controller;
 import com.tajutechgh.util.ApiUtil;
 import com.tajutechgh.util.Utilities;
 import com.tajutechgh.view.LonginView;
+import com.tajutechgh.view.RegisterView;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.input.MouseEvent;
@@ -58,6 +59,15 @@ public class LoginController {
 
                      exception.printStackTrace();
                 }
+            }
+        });
+
+        longinView.getSignupLabel().setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+                new RegisterView().show();
             }
         });
     }
