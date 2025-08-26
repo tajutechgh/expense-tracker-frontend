@@ -1,7 +1,7 @@
 package com.tajutechgh;
 
 import com.tajutechgh.util.ViewNavigator;
-import com.tajutechgh.view.LonginView;
+import com.tajutechgh.view.LoginView;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -14,6 +14,6 @@ public class Main extends Application {
 
         ViewNavigator.setMainStage(stage);
 
-        new LonginView().show();
+        new LoginView().show();
     }
 }

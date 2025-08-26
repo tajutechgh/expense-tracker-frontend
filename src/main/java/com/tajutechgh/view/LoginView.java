@@ -11,7 +11,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
-public class LonginView {
+public class LoginView {
 
     private Label expenseTrackerLabel = new Label("Expense Tracker");
     private TextField userNameField = new TextField();

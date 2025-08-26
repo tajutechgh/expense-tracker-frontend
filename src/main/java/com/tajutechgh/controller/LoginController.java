@@ -1,8 +1,9 @@
 package com.tajutechgh.controller;
 
 import com.tajutechgh.util.ApiUtil;
+import com.tajutechgh.util.SqlUtil;
 import com.tajutechgh.util.Utilities;
-import com.tajutechgh.view.LonginView;
+import com.tajutechgh.view.LoginView;
 import com.tajutechgh.view.RegisterView;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -13,11 +14,11 @@ import java.net.HttpURLConnection;
 
 public class LoginController {
 
-    private LonginView longinView;
+    private LoginView loginView;
 
-    public LoginController(LonginView longinView) {
+    public LoginController(LoginView loginView) {
 
-        this.longinView = longinView;
+        this.loginView = loginView;
 
         initialized();
     }
@@ -25,44 +26,21 @@ public class LoginController {
     // this method get called when ever the login button is clicked
     private void initialized(){
 
-        longinView.getLoginButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
+        loginView.getLoginButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent mouseEvent) {
 
-                isUserValidated();
+                if (!isUserValidated()) return;
 
-                String email = longinView.getUserNameField().getText();
-                String password = longinView.getPasswordField().getText();
+                String email = loginView.getUserNameField().getText();
+                String password = loginView.getPasswordField().getText();
 
-                // authenticate email and password
-                HttpURLConnection conn = null;
-
-                try {
-
-                    conn = ApiUtil.fetchApi("/api/v1/users/login?email=" + email + "&password=" + password, ApiUtil.RequestMethod.POST, null);
-
-                    if (conn.getResponseCode() != 200){
-
-                        System.out.println("Failed To Authenticate!");
-
-                        Utilities.showAlertDialog(Alert.AlertType.ERROR, "Failed To Authenticate !!!");
-
-                    }else {
-
-                        System.out.println("Login Successful");
-
-                        Utilities.showAlertDialog(Alert.AlertType.INFORMATION, "Login Successful !!!");
-                    }
-
-                }catch (IOException exception){
-
-                     exception.printStackTrace();
-                }
+                SqlUtil.loginUser(email, password);
             }
         });
 
-        longinView.getSignupLabel().setOnMouseClicked(new EventHandler<MouseEvent>() {
+        loginView.getSignupLabel().setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -72,19 +50,22 @@ public class LoginController {
         });
     }
 
-    private void  isUserValidated() {
+    private boolean  isUserValidated() {
 
-        if (longinView.getUserNameField().getText().isEmpty()){
+        if (loginView.getUserNameField().getText().isEmpty()){
 
             Utilities.showAlertDialog(Alert.AlertType.WARNING, "Username cannot be empty !!!");
 
-            return;
+            return false;
         }
 
-        if (longinView.getPasswordField().getText().isEmpty()){
+        if (loginView.getPasswordField().getText().isEmpty()){
 
             Utilities.showAlertDialog(Alert.AlertType.WARNING, "Password cannot be empty !!!");
 
+            return false;
         }
+
+        return true;
     }
 }
