@@ -48,13 +48,9 @@ public class SqlUtil {
 
             if (conn.getResponseCode() != 200){
 
-                System.out.println("Failed To Authenticate!");
-
                 Utilities.showAlertDialog(Alert.AlertType.ERROR, "Failed To Authenticate !!!");
 
             }else {
-
-                System.out.println("Login Successful");
 
                 Utilities.showAlertDialog(Alert.AlertType.INFORMATION, "Login Successful !!!");
             }

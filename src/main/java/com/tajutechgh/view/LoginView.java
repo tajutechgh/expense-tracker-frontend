@@ -51,7 +51,7 @@ public class LoginView {
 
     private VBox createLoginForm(){
 
-        VBox loginFormBox = new VBox(51);
+        VBox loginFormBox = new VBox(44);
 
         loginFormBox.setAlignment(Pos.CENTER);
 

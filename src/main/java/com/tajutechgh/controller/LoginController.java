@@ -3,6 +3,7 @@ package com.tajutechgh.controller;
 import com.tajutechgh.util.ApiUtil;
 import com.tajutechgh.util.SqlUtil;
 import com.tajutechgh.util.Utilities;
+import com.tajutechgh.view.DashboardView;
 import com.tajutechgh.view.LoginView;
 import com.tajutechgh.view.RegisterView;
 import javafx.event.EventHandler;
@@ -37,6 +38,8 @@ public class LoginController {
                 String password = loginView.getPasswordField().getText();
 
                 SqlUtil.loginUser(email, password);
+
+                new DashboardView(email).show();
             }
         });
 
