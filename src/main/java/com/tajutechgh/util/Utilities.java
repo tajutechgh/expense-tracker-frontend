@@ -1,6 +1,7 @@
 package com.tajutechgh.util;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.ColorPicker;
 
 public class Utilities {
 
@@ -13,5 +14,12 @@ public class Utilities {
 
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public static String getHaxColorValue(ColorPicker colorPicker){
+
+        String color = colorPicker.getValue().toString();
+
+        return color.substring(2, color.length() -2);
     }
 }

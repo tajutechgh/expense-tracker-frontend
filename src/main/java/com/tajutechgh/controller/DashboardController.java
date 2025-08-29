@@ -1,11 +1,15 @@
 package com.tajutechgh.controller;
 
 import com.dialog.CreateNewCategoryDialog;
+import com.model.User;
+import com.tajutechgh.util.SqlUtil;
 import com.tajutechgh.view.DashboardView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
 public class DashboardController {
+
+    private User user;
 
     private DashboardView dashboardView;
 
@@ -13,7 +17,14 @@ public class DashboardController {
 
         this.dashboardView = dashboardView;
 
+        fetchUserData();
+
         initialize();
+    }
+
+    private void fetchUserData() {
+
+        user = SqlUtil.getUserByEmail(dashboardView.getEmail());
     }
 
     private void initialize() {
@@ -28,7 +39,7 @@ public class DashboardController {
             @Override
             public void handle(ActionEvent actionEvent) {
 
-                new CreateNewCategoryDialog().showAndWait();
+                new CreateNewCategoryDialog(user).showAndWait();
             }
         });
     }

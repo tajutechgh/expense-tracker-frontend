@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 public class DashboardView {
 
     private MenuItem createCategoryMenuItem;
+    private MenuItem viewCategoriesMenuItem;
 
     private String email;
 
@@ -75,8 +76,12 @@ public class DashboardView {
         Menu fileMenu = new Menu("File");
 
         createCategoryMenuItem = new MenuItem("Create Category");
+        viewCategoriesMenuItem = new MenuItem("View Categories");
 
-        fileMenu.getItems().addAll(createCategoryMenuItem);
+        fileMenu.getItems().addAll(
+                createCategoryMenuItem,
+                viewCategoriesMenuItem
+        );
 
         menuBar.getMenus().addAll(fileMenu);
 
@@ -140,5 +145,13 @@ public class DashboardView {
 
     public void setCreateCategoryMenuItem(MenuItem createCategoryMenuItem) {
         this.createCategoryMenuItem = createCategoryMenuItem;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

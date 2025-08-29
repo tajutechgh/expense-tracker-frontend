@@ -90,7 +90,7 @@ public class RegistrationController {
             return false;
         }
 
-        if (SqlUtil.getUserByEmail(registerView.getUserNameField().getText())){
+        if (SqlUtil.getUserByEmail(registerView.getUserNameField().getText()) != null){
 
             Utilities.showAlertDialog(Alert.AlertType.WARNING, "User with this email " + registerView.getUserNameField().getText() + " already exists !!!");
 
