@@ -70,7 +70,7 @@ public class ApiUtil {
 
             Scanner scanner = new Scanner(conn.getInputStream());
 
-            // loop through each line in the response and append it to the stringbuilder
+            // loop through each line in the response and append it to the string builder
             while(scanner.hasNext()){
 
                 resultJson.append(scanner.nextLine());

@@ -1,6 +1,7 @@
 package com.tajutechgh.controller;
 
 import com.dialog.CreateNewCategoryDialog;
+import com.dialog.ViewOrEditTransactionCategoryDialog;
 import com.model.User;
 import com.tajutechgh.util.SqlUtil;
 import com.tajutechgh.view.DashboardView;
@@ -40,6 +41,15 @@ public class DashboardController {
             public void handle(ActionEvent actionEvent) {
 
                 new CreateNewCategoryDialog(user).showAndWait();
+            }
+        });
+
+        dashboardView.getViewCategoriesMenuItem().setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+                new ViewOrEditTransactionCategoryDialog(user, DashboardController.this).showAndWait();
             }
         });
     }

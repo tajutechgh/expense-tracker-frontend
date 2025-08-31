@@ -32,9 +32,6 @@ public class CreateNewCategoryDialog extends CustomDialog {
 
         VBox dialogContentBox = new VBox(20);
 
-        dialogContentBox.setPrefWidth(400);
-        dialogContentBox.setPrefHeight(250);
-
         newCategoryTextField = new TextField();
         newCategoryTextField.setPromptText("Enter Category Name");
         newCategoryTextField.getStyleClass().addAll("text-size-md", "field-background", "text-light-gray");

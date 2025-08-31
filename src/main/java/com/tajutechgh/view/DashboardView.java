@@ -75,6 +75,8 @@ public class DashboardView {
 
         Menu fileMenu = new Menu("File");
 
+        fileMenu.getStyleClass().addAll("text-size-lg");
+
         createCategoryMenuItem = new MenuItem("Create Category");
         viewCategoriesMenuItem = new MenuItem("View Categories");
 
@@ -91,6 +93,8 @@ public class DashboardView {
     private HBox createBalanceSummaryBox() {
 
         HBox balanceSummaryBox = new HBox();
+
+        balanceSummaryBox.getStyleClass().addAll("margin-top");
 
         VBox currentBalanceBox = new VBox();
 
@@ -153,5 +157,13 @@ public class DashboardView {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public MenuItem getViewCategoriesMenuItem() {
+        return viewCategoriesMenuItem;
+    }
+
+    public void setViewCategoriesMenuItem(MenuItem viewCategoriesMenuItem) {
+        this.viewCategoriesMenuItem = viewCategoriesMenuItem;
     }
 }

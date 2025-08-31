@@ -1,19 +1,20 @@
 package com.tajutechgh.util;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+import com.model.TransactionCategory;
 import com.model.User;
-import com.tajutechgh.view.DashboardView;
 import com.tajutechgh.view.LoginView;
 import javafx.scene.control.Alert;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SqlUtil {
 
+    //get user by email
     public static User getUserByEmail(String email){
 
         HttpURLConnection conn = null;
@@ -58,6 +59,7 @@ public class SqlUtil {
         return null;
     }
 
+    //login user
     public static void loginUser(String email, String password){
 
         HttpURLConnection conn = null;
@@ -88,6 +90,7 @@ public class SqlUtil {
         }
     }
 
+    //register user
     public static void registerUser(JsonObject userData){
 
         HttpURLConnection conn = null;
@@ -121,6 +124,7 @@ public class SqlUtil {
         }
     }
 
+    //create transaction category
     public static void createCategory(JsonObject userData){
 
         HttpURLConnection conn = null;
@@ -150,5 +154,53 @@ public class SqlUtil {
                 conn.disconnect();
             }
         }
+    }
+
+    //list all transaction categories by a user
+    public static List<TransactionCategory> getAllTransactionCategoriesByUser(User user){
+
+        List<TransactionCategory> transactionCategories = new ArrayList<>();
+
+        HttpURLConnection conn = null;
+
+        try{
+
+            conn = ApiUtil.fetchApi("/api/v1/transaction-category/user/all/" + user.getId(), ApiUtil.RequestMethod.GET, null);
+
+            if (conn.getResponseCode() != 200){
+
+                System.out.println("Error (getTransactionCategoriesByUser()" + conn.getResponseCode());
+
+                return null;
+            }
+
+            String results = ApiUtil.readApiResponse(conn);
+
+            JsonArray resultJsonArray = new JsonParser().parse(results).getAsJsonArray();
+
+            for (JsonElement jsonElement : resultJsonArray){
+
+                Integer id = jsonElement.getAsJsonObject().get("id").getAsInt();
+                String categoryName = jsonElement.getAsJsonObject().get("categoryName").getAsString();
+                String categoryColor = jsonElement.getAsJsonObject().get("categoryColor").getAsString();
+
+                transactionCategories.add(new TransactionCategory(id, categoryName, categoryColor));
+            }
+
+            return transactionCategories;
+
+        }catch (IOException exception){
+
+            exception.printStackTrace();
+
+        }finally {
+
+            if (conn != null){
+
+                conn.disconnect();
+            }
+        }
+
+        return null;
     }
 }

@@ -34,6 +34,10 @@ Button:hover{
     -fx-opacity: 0.5;
 }
 
+.margin-top{
+   -fx-padding: 10;
+}
+
 /* text */
 .text-size-lg{
     -fx-font-size: 36px;
@@ -74,6 +78,10 @@ Button:hover{
 
 .bg-light-red{
     -fx-background-color: #e13742;
+}
+
+.bg-light-green{
+    -fx-background-color: #b3e6b3;
 }
 
 /* text decorations */
