@@ -203,4 +203,40 @@ public class SqlUtil {
 
         return null;
     }
+
+    //update transaction controller
+    public static void updateTransactionCategory(int categoryId, String categoryName, String categoryColor){
+
+        HttpURLConnection conn = null;
+
+        try{
+
+            conn = ApiUtil.fetchApi(
+                    "/api/v1/transaction-category/update/" +  categoryId + "?categoryName=" + UrlEncode.getUrlEncoder(categoryName) + "&categoryColor=" + UrlEncode.getUrlEncoder(categoryColor),
+                    ApiUtil.RequestMethod.PUT,
+                    null
+            );
+
+            if (conn.getResponseCode() == 200){
+
+                Utilities.showAlertDialog(Alert.AlertType.INFORMATION, "Transaction category updated Successfully !!!");
+
+            }else {
+
+                Utilities.showAlertDialog(Alert.AlertType.ERROR, "Failed To UpdateTransaction Category !!!");
+
+            }
+
+        }catch (IOException exception){
+
+            exception.printStackTrace();
+
+        }finally {
+
+            if (conn != null){
+
+                conn.disconnect();
+            }
+        }
+    }
 }

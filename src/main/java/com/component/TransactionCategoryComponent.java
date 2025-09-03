@@ -2,6 +2,8 @@ package com.component;
 
 import com.model.TransactionCategory;
 import com.tajutechgh.controller.DashboardController;
+import com.tajutechgh.util.SqlUtil;
+import com.tajutechgh.util.Utilities;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -69,6 +71,13 @@ public class TransactionCategoryComponent extends HBox {
             public void handle(MouseEvent mouseEvent) {
 
                 handleToggle();;
+
+                //extract values
+                String categoryName = categoryNameTextField.getText();
+                String categoryColor = Utilities.getHaxColorValue(categoryColorPicker);
+
+                //update transaction category
+                SqlUtil.updateTransactionCategory(transactionCategory.getId(), categoryName, categoryColor);
             }
         });
 
