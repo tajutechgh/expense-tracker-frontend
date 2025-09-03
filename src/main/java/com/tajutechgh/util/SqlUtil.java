@@ -239,4 +239,44 @@ public class SqlUtil {
             }
         }
     }
+
+    public static boolean deleteTransactionCategory(int categoryId){
+
+        HttpURLConnection conn = null;
+
+        try{
+
+            conn = ApiUtil.fetchApi(
+                    "/api/v1/transaction-category/delete/"  + categoryId,
+                    ApiUtil.RequestMethod.DELETE,
+                    null
+            );
+
+            if (conn.getResponseCode() == 200){
+
+                Utilities.showAlertDialog(Alert.AlertType.INFORMATION, "Transaction category deleted Successfully !!!");
+
+                return true;
+
+            }else {
+
+                Utilities.showAlertDialog(Alert.AlertType.ERROR, "Failed To DeleteTransaction Category !!!");
+
+                return false;
+            }
+
+        }catch (IOException exception){
+
+            exception.printStackTrace();
+
+        }finally {
+
+            if (conn != null){
+
+                conn.disconnect();
+            }
+        }
+
+        return false;
+    }
 }
