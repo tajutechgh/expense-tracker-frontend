@@ -169,7 +169,7 @@ public class SqlUtil {
 
             if (conn.getResponseCode() != 200){
 
-                System.out.println("Error (getTransactionCategoriesByUser()" + conn.getResponseCode());
+                System.out.println("Error (getTransactionCategoriesByUser()) " + conn.getResponseCode());
 
                 return null;
             }

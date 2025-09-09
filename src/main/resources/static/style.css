@@ -5,10 +5,16 @@
 } */
 
 VBox {
-    -fx-border-width: 1px;
-    -fx-border-color: white;
-    -fx-padding: 20;
+    -fx-border-width: 4px;
+    -fx-border-color: #ccffff;
+    -fx-padding: 10px;
 }
+
+/*GridPane {
+    -fx-border-width: 1px;
+    -fx-border-color: pink;
+    -fx-padding: 10px;
+}*/
 
 /* VBox {
     -fx-border-width: 1px;
@@ -34,8 +40,13 @@ Button:hover{
     -fx-opacity: 0.5;
 }
 
-.margin-top{
-   -fx-padding: 10;
+ScrollPane,
+ScrollPane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.padding-top{
+   -fx-padding: 15;
 }
 
 /* text */
@@ -127,3 +138,6 @@ Button:hover{
     -fx-text-fill: #4265c7;
 }
 
+.dashboard-padding{
+    -fx-padding: 20px 20px;
+}

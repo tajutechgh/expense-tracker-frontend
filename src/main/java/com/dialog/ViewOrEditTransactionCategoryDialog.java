@@ -5,6 +5,8 @@ import com.model.TransactionCategory;
 import com.model.User;
 import com.tajutechgh.controller.DashboardController;
 import com.tajutechgh.util.SqlUtil;
+import com.tajutechgh.util.Utilities;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
@@ -23,7 +25,7 @@ public class ViewOrEditTransactionCategoryDialog extends CustomDialog {
         //configure the dialog
         setTitle("View Categories");
 //        setWidth(815);
-//        setHeight(500);
+           setHeight(600);
 
         ScrollPane mainContainer = createMainContainerContent();
 
@@ -39,13 +41,22 @@ public class ViewOrEditTransactionCategoryDialog extends CustomDialog {
 
         List<TransactionCategory> transactionCategories = SqlUtil.getAllTransactionCategoriesByUser(user);
 
-        for (TransactionCategory transactionCategory : transactionCategories){
+        if (transactionCategories != null && !transactionCategories.isEmpty()){
 
-            TransactionCategoryComponent transactionCategoryComponent = new TransactionCategoryComponent(dashboardController, transactionCategory);
+            for (TransactionCategory transactionCategory : transactionCategories){
 
-            dialogVBox.getChildren().addAll(transactionCategoryComponent);
+                TransactionCategoryComponent transactionCategoryComponent = new TransactionCategoryComponent(dashboardController, transactionCategory);
+
+                dialogVBox.getChildren().addAll(transactionCategoryComponent);
+            }
+
+            return  scrollPane;
+
+        }else {
+
+            Utilities.showAlertDialog(Alert.AlertType.WARNING, "Transaction category list is empty, add new category !!!");
         }
 
-        return  scrollPane;
+        return  null;
     }
 }
