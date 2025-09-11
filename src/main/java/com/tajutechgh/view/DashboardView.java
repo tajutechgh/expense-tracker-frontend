@@ -239,4 +239,12 @@ public class DashboardView {
     public void setViewCategoriesMenuItem(MenuItem viewCategoriesMenuItem) {
         this.viewCategoriesMenuItem = viewCategoriesMenuItem;
     }
+
+    public Button getAddTransactionButton() {
+        return addTransactionButton;
+    }
+
+    public void setAddTransactionButton(Button addTransactionButton) {
+        this.addTransactionButton = addTransactionButton;
+    }
 }
