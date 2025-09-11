@@ -1,13 +1,19 @@
 package com.dialog;
 
+import com.google.gson.JsonObject;
 import com.model.TransactionCategory;
 import com.model.User;
 import com.tajutechgh.util.SqlUtil;
+import com.tajutechgh.util.Utilities;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class CreateOrEditTransactionDialog extends CustomDialog {
@@ -117,10 +123,47 @@ public class CreateOrEditTransactionDialog extends CustomDialog {
         saveButton.setPrefWidth(200);
         saveButton.getStyleClass().addAll("bg-light-green", "text-white", "text-size-md", "rounded-border");
 
+        saveButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+                if (!isInputValidated()) return;
+
+                // extract the data from the nodes
+                String transactionName = transactionNameField.getText();
+                double transactionAmount = Double.parseDouble(transactionAmountField.getText());
+                LocalDate transactionDate = transactionDatePicker.getValue();
+                String transactionType = ((RadioButton) transactionTypeToggleGroup.getSelectedToggle()).getText();
+                String transactionCategoryName = transactionCategoryBox.getValue();
+                TransactionCategory transactionCategory = Utilities.findTransactionCategoryByName(listTransactionCategories, transactionCategoryName);
+
+                JsonObject transactionDataObject = new JsonObject();
+
+                transactionDataObject.addProperty("userId", user.getId());
+                transactionDataObject.addProperty("categoryId", transactionCategory.getId());
+                transactionDataObject.addProperty("transactionName", transactionName);
+                transactionDataObject.addProperty("transactionAmount", transactionAmount);
+                transactionDataObject.addProperty("transactionDate", transactionDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
+                transactionDataObject.addProperty("transactionType", transactionType);
+
+                SqlUtil.createTransaction(transactionDataObject);
+            }
+        });
+
         Button cancelButton = new Button("Cancel");
 
         cancelButton.setPrefWidth(200);
         cancelButton.getStyleClass().addAll("bg-light-red", "text-white", "text-size-md", "rounded-border");
+
+        cancelButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+                CreateOrEditTransactionDialog.this.close();
+            }
+        });
 
         confirmAndCancelButtonBox.getChildren().addAll(
                 saveButton,
@@ -128,5 +171,46 @@ public class CreateOrEditTransactionDialog extends CustomDialog {
         );
 
         return confirmAndCancelButtonBox;
+    }
+
+    private boolean isInputValidated() {
+
+        if (transactionNameField.getText().isEmpty()){
+
+            Utilities.showAlertDialog(Alert.AlertType.WARNING, "Transaction name cannot be empty !!!");
+
+            return false;
+        }
+
+        if (transactionAmountField.getText().isEmpty()){
+
+            Utilities.showAlertDialog(Alert.AlertType.WARNING, "Transaction amount cannot be empty !!!");
+
+            return false;
+        }
+
+        if (transactionDatePicker.getValue() == null){
+
+            Utilities.showAlertDialog(Alert.AlertType.WARNING, "Transaction date cannot be empty !!!");
+
+            return false;
+        }
+
+        if (transactionTypeToggleGroup.getSelectedToggle() == null){
+
+            Utilities.showAlertDialog(Alert.AlertType.WARNING, "Transaction type cannot be empty !!!");
+
+            return false;
+        }
+
+
+        if (transactionCategoryBox.getValue() == null){
+
+            Utilities.showAlertDialog(Alert.AlertType.WARNING, "Transaction category cannot be empty !!!");
+
+            return false;
+        }
+
+        return true;
     }
 }

@@ -1,7 +1,10 @@
 package com.tajutechgh.util;
 
+import com.model.TransactionCategory;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ColorPicker;
+
+import java.util.List;
 
 public class Utilities {
 
@@ -21,5 +24,18 @@ public class Utilities {
         String color = colorPicker.getValue().toString();
 
         return color.substring(2, color.length() -2);
+    }
+
+    public static TransactionCategory findTransactionCategoryByName(List<TransactionCategory> transactionCategories, String categoryName){
+
+        for (TransactionCategory transactionCategory : transactionCategories){
+
+            if (transactionCategory.getCategoryName().equals(categoryName)){
+
+                return transactionCategory;
+            }
+        }
+
+        return null;
     }
 }

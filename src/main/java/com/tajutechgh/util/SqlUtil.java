@@ -240,6 +240,7 @@ public class SqlUtil {
         }
     }
 
+    //delete transaction category
     public static boolean deleteTransactionCategory(int categoryId){
 
         HttpURLConnection conn = null;
@@ -278,5 +279,37 @@ public class SqlUtil {
         }
 
         return false;
+    }
+
+    //create transaction
+    public static void createTransaction(JsonObject userData){
+
+        HttpURLConnection conn = null;
+
+        try{
+
+            conn = ApiUtil.fetchApi("/api/v1/transactions/create", ApiUtil.RequestMethod.POST, userData);
+
+            if (conn.getResponseCode() == 201){
+
+                Utilities.showAlertDialog(Alert.AlertType.INFORMATION, "Transaction added Successfully !!!");
+
+            }else {
+
+                Utilities.showAlertDialog(Alert.AlertType.ERROR, "Failed To Create Transaction !!!");
+
+            }
+
+        }catch (IOException exception){
+
+            exception.printStackTrace();
+
+        }finally {
+
+            if (conn != null){
+
+                conn.disconnect();
+            }
+        }
     }
 }

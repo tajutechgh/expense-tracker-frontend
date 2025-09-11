@@ -120,7 +120,7 @@ public class DashboardView {
 
         HBox.setHgrow(labelAndButtonSpaceRegion, Priority.ALWAYS);
 
-        addTransactionButton.setStyle(" -fx-background-color: blue; -fx-text-fill: #fff;  -fx-font-size: 20px;");
+        addTransactionButton.setStyle(" -fx-background-color: #377BE1; -fx-text-fill: #fff;  -fx-font-size: 20px;");
 
         rescentTransactionsLabelAndAddButtonHBox.getChildren().addAll(
                 recentTransactionsLabel,
