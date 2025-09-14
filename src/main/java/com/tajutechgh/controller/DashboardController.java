@@ -1,19 +1,29 @@
 package com.tajutechgh.controller;
 
+import com.component.TransactionComponent;
 import com.dialog.CreateNewCategoryDialog;
 import com.dialog.CreateOrEditTransactionDialog;
 import com.dialog.ViewOrEditTransactionCategoryDialog;
+import com.model.Transaction;
 import com.model.User;
 import com.tajutechgh.util.SqlUtil;
 import com.tajutechgh.view.DashboardView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
+import java.util.List;
+
 public class DashboardController {
+
+    private final int recentTransactionPageSize = 5;
 
     private User user;
 
     private DashboardView dashboardView;
+
+    private int currentPageNum;
+
+    private List<Transaction> recentTransactions;
 
     public DashboardController(DashboardView dashboardView) {
 
@@ -27,6 +37,23 @@ public class DashboardController {
     private void fetchUserData() {
 
         user = SqlUtil.getUserByEmail(dashboardView.getEmail());
+
+        createRecentTransactionsComponent();
+    }
+
+    private void createRecentTransactionsComponent(){
+
+        recentTransactions = SqlUtil.getRecentTransactionByUser(user.getId(), currentPageNum, recentTransactionPageSize);
+
+        if (recentTransactions == null) return;;
+
+        for (Transaction transaction : recentTransactions){
+
+            dashboardView.getRecentTransactionBox().getChildren().add(
+
+                    new TransactionComponent(DashboardController.this, transaction, user)
+            );
+        }
     }
 
     private void initialize() {

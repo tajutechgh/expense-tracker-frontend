@@ -5,8 +5,8 @@
 } */
 
 VBox {
-    -fx-border-width: 4px;
-    -fx-border-color: #ccffff;
+    -fx-border-width: 3px;
+    -fx-border-color: #cccccc;
     -fx-padding: 10px;
 }
 

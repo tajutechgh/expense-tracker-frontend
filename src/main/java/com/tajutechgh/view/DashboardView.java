@@ -129,7 +129,7 @@ public class DashboardView {
         );
 
         //recent transactions box
-        recentTransactionBox = new VBox();
+        recentTransactionBox = new VBox(10);
         recentTransactionsScrollPane = new ScrollPane(recentTransactionBox);
         recentTransactionsScrollPane.setFitToWidth(true);
         recentTransactionsScrollPane.setFitToHeight(true);
@@ -246,5 +246,13 @@ public class DashboardView {
 
     public void setAddTransactionButton(Button addTransactionButton) {
         this.addTransactionButton = addTransactionButton;
+    }
+
+    public VBox getRecentTransactionBox() {
+        return recentTransactionBox;
+    }
+
+    public void setRecentTransactionBox(VBox recentTransactionBox) {
+        this.recentTransactionBox = recentTransactionBox;
     }
 }

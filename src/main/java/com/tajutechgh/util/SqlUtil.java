@@ -1,6 +1,7 @@
 package com.tajutechgh.util;
 
 import com.google.gson.*;
+import com.model.Transaction;
 import com.model.TransactionCategory;
 import com.model.User;
 import com.tajutechgh.view.LoginView;
@@ -8,6 +9,7 @@ import javafx.scene.control.Alert;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -311,5 +313,60 @@ public class SqlUtil {
                 conn.disconnect();
             }
         }
+    }
+
+    //list recent transactions by a user
+    public static List<Transaction> getRecentTransactionByUser(int userId, int pageNum, int pageSize){
+
+        List<Transaction> transactions = new ArrayList<>();
+
+        HttpURLConnection conn = null;
+
+        try{
+
+            conn = ApiUtil.fetchApi(
+                    "/api/v1/transactions/recent/user/" + userId + "?page=" + pageNum + "&size=" + pageSize,
+                    ApiUtil.RequestMethod.GET,
+                    null
+            );
+
+            if (conn.getResponseCode() != 200){
+
+                System.out.println("Error (getRecentTransactionsByUser()) " + conn.getResponseCode());
+
+                return null;
+            }
+
+            String results = ApiUtil.readApiResponse(conn);
+
+            JsonArray resultJsonArray = new JsonParser().parse(results).getAsJsonArray();
+
+            for (JsonElement jsonElement : resultJsonArray){
+
+                Integer id = jsonElement.getAsJsonObject().get("id").getAsInt();
+                Integer transactionCategoryId = jsonElement.getAsJsonObject().get("categoryId").getAsInt();
+                String transactionName = jsonElement.getAsJsonObject().get("transactionName").getAsString();
+                double transactionAmount = jsonElement.getAsJsonObject().get("transactionAmount").getAsDouble();
+                LocalDate transactionDate = LocalDate.parse(jsonElement.getAsJsonObject().get("transactionDate").getAsString());
+                String transactionType = jsonElement.getAsJsonObject().get("transactionType").getAsString();
+
+                transactions.add(new Transaction(id, transactionCategoryId, transactionName, transactionAmount, transactionDate, transactionType));
+            }
+
+            return transactions;
+
+        }catch (IOException exception){
+
+            exception.printStackTrace();
+
+        }finally {
+
+            if (conn != null){
+
+                conn.disconnect();
+            }
+        }
+
+        return null;
     }
 }
