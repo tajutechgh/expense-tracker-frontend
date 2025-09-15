@@ -1,8 +1,11 @@
 package com.dialog;
 
+import com.component.TransactionComponent;
 import com.google.gson.JsonObject;
+import com.model.Transaction;
 import com.model.TransactionCategory;
 import com.model.User;
+import com.tajutechgh.controller.DashboardController;
 import com.tajutechgh.util.SqlUtil;
 import com.tajutechgh.util.Utilities;
 import javafx.event.EventHandler;
@@ -25,14 +28,18 @@ public class CreateOrEditTransactionDialog extends CustomDialog {
     private DatePicker transactionDatePicker;
     private ComboBox<String> transactionCategoryBox;
     private ToggleGroup transactionTypeToggleGroup;
+    private DashboardController dashboardController;
+    private TransactionComponent transactionComponent;
 
     private boolean isEditing;
 
-    public CreateOrEditTransactionDialog(User user, boolean isEditing) {
+    public CreateOrEditTransactionDialog(DashboardController dashboardController, TransactionComponent transactionComponent, boolean isEditing) {
 
-        super(user);
+        super(dashboardController.getUser());
 
         this.isEditing = isEditing;
+        this.transactionComponent = transactionComponent;
+        this.dashboardController = dashboardController;
 
         setTitle(isEditing ? "Edit Transaction" : "Create Transaction");
 //        setWidth(700);
@@ -43,6 +50,13 @@ public class CreateOrEditTransactionDialog extends CustomDialog {
         VBox mainContainer = createMainContentBox();
 
         getDialogPane().setContent(mainContainer);
+    }
+
+    // for creating transaction
+    public CreateOrEditTransactionDialog(DashboardController dashboardController, boolean isEditing){
+
+        // calling the above constructor
+        this(dashboardController, null, isEditing);
     }
 
     private VBox createMainContentBox() {
@@ -74,6 +88,23 @@ public class CreateOrEditTransactionDialog extends CustomDialog {
             transactionCategoryBox.getItems().add(category.getCategoryName());
         }
 
+        if (isEditing){
+
+            Transaction transaction = transactionComponent.getTransaction();
+
+            transactionNameField.setText(transaction.getTransactionName());
+            transactionAmountField.setText(String.valueOf(transaction.getTransactionAmount()));
+            transactionDatePicker.setValue(transaction.getTransactionDate());
+
+            for (TransactionCategory category : listTransactionCategories){
+
+                if (category.getId() == transaction.getTransactionCategoryId()){
+
+                    transactionCategoryBox.setValue(category.getCategoryName());
+                }
+            }
+        }
+
         mainContentBox.getChildren().addAll(
                 transactionNameField,
                 transactionAmountField,
@@ -103,6 +134,20 @@ public class CreateOrEditTransactionDialog extends CustomDialog {
 
         expenseRadioButton.setToggleGroup(transactionTypeToggleGroup);
         expenseRadioButton.getStyleClass().addAll("text-size-md", "text-light-gray");
+
+        if (isEditing){
+
+            Transaction transaction = transactionComponent.getTransaction();
+
+            if (transaction.getTransactionTyper().equalsIgnoreCase("income")){
+
+                incomeRadioButton.setSelected(true);
+
+            }else {
+
+                expenseRadioButton.setSelected(true);
+            }
+        }
 
         radioButtonBox.getChildren().addAll(
                 incomeRadioButton,

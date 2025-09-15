@@ -1,5 +1,6 @@
 package com.component;
 
+import com.dialog.CreateOrEditTransactionDialog;
 import com.model.Transaction;
 import com.model.TransactionCategory;
 import com.model.User;
@@ -107,6 +108,15 @@ public class TransactionComponent extends HBox {
         editButton = new Button("Edit");
         editButton.getStyleClass().addAll("text-size-md", "rounded-border", "bg-light-green", "text-white");
 
+        editButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+                new CreateOrEditTransactionDialog(dashboardController, TransactionComponent.this, true).showAndWait();
+            }
+        });
+
         deleteButton = new Button("Delete");
         deleteButton.getStyleClass().addAll("text-size-md", "rounded-border", "bg-light-red", "text-white");
 
@@ -115,7 +125,16 @@ public class TransactionComponent extends HBox {
             @Override
             public void handle(MouseEvent mouseEvent) {
 
+                if (!SqlUtil.deleteTransaction(transaction.getId()))  return;
 
+                // remove the component from the dashboard
+                setVisible(false);
+                setManaged(false);
+
+                if (getParent() instanceof VBox){
+
+                    ((VBox) getParent()).getChildren().remove(TransactionComponent.this);
+                }
             }
         });
 
@@ -125,5 +144,13 @@ public class TransactionComponent extends HBox {
         );
 
         return actionButtonSection;
+    }
+
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(Transaction transaction) {
+        this.transaction = transaction;
     }
 }

@@ -369,4 +369,45 @@ public class SqlUtil {
 
         return null;
     }
+
+    //delete transaction
+    public static boolean deleteTransaction(int transactionId){
+
+        HttpURLConnection conn = null;
+
+        try{
+
+            conn = ApiUtil.fetchApi(
+                    "/api/v1/transactions/delete/"  + transactionId,
+                    ApiUtil.RequestMethod.DELETE,
+                    null
+            );
+
+            if (conn.getResponseCode() == 200){
+
+                Utilities.showAlertDialog(Alert.AlertType.INFORMATION, "Transaction deleted Successfully !!!");
+
+                return true;
+
+            }else {
+
+                Utilities.showAlertDialog(Alert.AlertType.ERROR, "Failed To DeleteTransaction !!!");
+
+                return false;
+            }
+
+        }catch (IOException exception){
+
+            exception.printStackTrace();
+
+        }finally {
+
+            if (conn != null){
+
+                conn.disconnect();
+            }
+        }
+
+        return false;
+    }
 }

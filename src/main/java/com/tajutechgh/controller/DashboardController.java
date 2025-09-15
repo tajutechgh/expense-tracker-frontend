@@ -36,6 +36,9 @@ public class DashboardController {
 
     private void fetchUserData() {
 
+        // remove all children from the dashboard
+        dashboardView.getRecentTransactionBox().getChildren().clear();
+
         user = SqlUtil.getUserByEmail(dashboardView.getEmail());
 
         createRecentTransactionsComponent();
@@ -91,8 +94,16 @@ public class DashboardController {
             @Override
             public void handle(ActionEvent actionEvent) {
 
-                new CreateOrEditTransactionDialog(user, false).showAndWait();
+                new CreateOrEditTransactionDialog(DashboardController.this, false).showAndWait();
             }
         });
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
