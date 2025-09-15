@@ -206,7 +206,7 @@ public class SqlUtil {
         return null;
     }
 
-    //update transaction controller
+    //update transaction category
     public static void updateTransactionCategory(int categoryId, String categoryName, String categoryColor){
 
         HttpURLConnection conn = null;
@@ -368,6 +368,38 @@ public class SqlUtil {
         }
 
         return null;
+    }
+
+    //update transaction
+    public static void updateTransaction(int transactionId, JsonObject transactionData){
+
+        HttpURLConnection conn = null;
+
+        try{
+
+            conn = ApiUtil.fetchApi("/api/v1/transactions/update/" +  transactionId, ApiUtil.RequestMethod.PUT, transactionData);
+
+            if (conn.getResponseCode() == 200){
+
+                Utilities.showAlertDialog(Alert.AlertType.INFORMATION, "Transaction updated Successfully !!!");
+
+            }else {
+
+                Utilities.showAlertDialog(Alert.AlertType.ERROR, "Failed To UpdateTransaction !!!");
+
+            }
+
+        }catch (IOException exception){
+
+            exception.printStackTrace();
+
+        }finally {
+
+            if (conn != null){
+
+                conn.disconnect();
+            }
+        }
     }
 
     //delete transaction

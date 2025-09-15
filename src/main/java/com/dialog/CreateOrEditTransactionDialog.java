@@ -185,6 +185,13 @@ public class CreateOrEditTransactionDialog extends CustomDialog {
 
                 JsonObject transactionDataObject = new JsonObject();
 
+                if (isEditing){
+
+                    int transactionId = transactionComponent.getTransaction().getId();
+
+                    transactionDataObject.addProperty("id", transactionId);
+                }
+
                 transactionDataObject.addProperty("userId", user.getId());
                 transactionDataObject.addProperty("categoryId", transactionCategory.getId());
                 transactionDataObject.addProperty("transactionName", transactionName);
@@ -192,7 +199,20 @@ public class CreateOrEditTransactionDialog extends CustomDialog {
                 transactionDataObject.addProperty("transactionDate", transactionDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
                 transactionDataObject.addProperty("transactionType", transactionType);
 
-                SqlUtil.createTransaction(transactionDataObject);
+                if (!isEditing){
+
+                    SqlUtil.createTransaction(transactionDataObject);
+
+                    dashboardController.fetchUserData();
+
+                }else {
+
+                    int transactionId = transactionComponent.getTransaction().getId();
+
+                    SqlUtil.updateTransaction(transactionId, transactionDataObject);
+
+                    dashboardController.fetchUserData();
+                }
             }
         });
 

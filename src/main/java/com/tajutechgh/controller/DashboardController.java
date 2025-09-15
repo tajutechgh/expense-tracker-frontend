@@ -34,7 +34,7 @@ public class DashboardController {
         initialize();
     }
 
-    private void fetchUserData() {
+    public void fetchUserData() {
 
         // remove all children from the dashboard
         dashboardView.getRecentTransactionBox().getChildren().clear();
