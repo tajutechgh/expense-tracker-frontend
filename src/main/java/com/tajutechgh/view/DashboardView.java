@@ -1,8 +1,11 @@
 package com.tajutechgh.view;
 
+import com.animation.LoadAnimationPane;
 import com.tajutechgh.controller.DashboardController;
 import com.tajutechgh.util.Utilities;
 import com.tajutechgh.util.ViewNavigator;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -11,6 +14,8 @@ public class DashboardView {
 
     private MenuItem createCategoryMenuItem;
     private MenuItem viewCategoriesMenuItem;
+
+    private LoadAnimationPane loadAnimationPane;
 
     private String email;
 
@@ -28,6 +33,8 @@ public class DashboardView {
     public DashboardView(String email) {
 
         this.email = email;
+
+        loadAnimationPane = new LoadAnimationPane(Utilities.APP_WIDTH, Utilities.APP_HEIGHT);
 
         currentBalanceLabel = new Label("Current Balance");
         totalIncomeLabel = new Label("Total Income");
@@ -47,6 +54,24 @@ public class DashboardView {
         scene.getStylesheets().add(getClass().getResource( "/static/style.css").toExternalForm());
 
         new DashboardController(this);
+
+        scene.widthProperty().addListener(new ChangeListener<Number>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+
+                loadAnimationPane.resizeWidth(t1.doubleValue());
+            }
+        });
+
+        scene.heightProperty().addListener(new ChangeListener<Number>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+
+                loadAnimationPane.resizeHeight(t1.doubleValue());
+            }
+        });
 
         ViewNavigator.switchViews(scene);
     }
@@ -78,7 +103,8 @@ public class DashboardView {
 
         mainContainer.getChildren().addAll(
                 menuBar,
-                mainContainerWrapper
+                mainContainerWrapper,
+                loadAnimationPane
         );
 
         return new Scene(mainContainer, Utilities.APP_WIDTH, Utilities.APP_HEIGHT);
@@ -254,5 +280,13 @@ public class DashboardView {
 
     public void setRecentTransactionBox(VBox recentTransactionBox) {
         this.recentTransactionBox = recentTransactionBox;
+    }
+
+    public LoadAnimationPane getLoadAnimationPane() {
+        return loadAnimationPane;
+    }
+
+    public void setLoadAnimationPane(LoadAnimationPane loadAnimationPane) {
+        this.loadAnimationPane = loadAnimationPane;
     }
 }

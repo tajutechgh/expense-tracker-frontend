@@ -36,12 +36,33 @@ public class DashboardController {
 
     public void fetchUserData() {
 
+        // loading animations
+        dashboardView.getLoadAnimationPane().setVisible(true);
+
         // remove all children from the dashboard
         dashboardView.getRecentTransactionBox().getChildren().clear();
 
         user = SqlUtil.getUserByEmail(dashboardView.getEmail());
 
         createRecentTransactionsComponent();
+
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                try {
+
+                    Thread.sleep(1500);
+
+                    dashboardView.getLoadAnimationPane().setVisible(false);
+
+                }catch (InterruptedException exception){
+
+                    exception.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     private void createRecentTransactionsComponent(){
