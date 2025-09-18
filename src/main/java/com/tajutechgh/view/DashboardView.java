@@ -1,19 +1,26 @@
 package com.tajutechgh.view;
 
 import com.animation.LoadAnimationPane;
+import com.model.MonthlyFinance;
 import com.tajutechgh.controller.DashboardController;
 import com.tajutechgh.util.Utilities;
 import com.tajutechgh.util.ViewNavigator;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
+
+import java.math.BigDecimal;
+import java.time.Year;
 
 public class DashboardView {
 
     private MenuItem createCategoryMenuItem;
     private MenuItem viewCategoriesMenuItem;
+    private MenuItem logoutMenuItem;
 
     private LoadAnimationPane loadAnimationPane;
 
@@ -26,9 +33,17 @@ public class DashboardView {
     private Label totalExpenseLabel;
     private Label totalExpense;
 
+    private ComboBox<Integer> yearComboBox;
+    private Button viewChartButton;
     private Button addTransactionButton;
     private VBox recentTransactionBox;
     private ScrollPane recentTransactionsScrollPane;
+
+    // table
+    private TableView<MonthlyFinance> transactionTable;
+    private TableColumn<MonthlyFinance, String> monthlyColumn;
+    private TableColumn<MonthlyFinance, BigDecimal> incomeColumn;
+    private TableColumn<MonthlyFinance, BigDecimal> expenseColumn;
 
     public DashboardView(String email) {
 
@@ -61,6 +76,8 @@ public class DashboardView {
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
 
                 loadAnimationPane.resizeWidth(t1.doubleValue());
+
+                resizeTableWidthColumns();
             }
         });
 
@@ -114,21 +131,94 @@ public class DashboardView {
 
         GridPane gridPane = new GridPane();
 
+        gridPane.setHgap(10);
+
         // set constraints to te cells in the grid pane
         ColumnConstraints columnConstraint = new ColumnConstraints();
         columnConstraint.setPercentWidth(50);
         gridPane.getColumnConstraints().addAll(columnConstraint, columnConstraint);
 
-        // recent transaction
+        //transaction table at the left
+        VBox transactionsTableSummaryVBox = new VBox(20);
+
+        transactionsTableSummaryVBox.getStyleClass().addAll( "rounded-border", "padding-10px");
+
+        HBox yearComboBoxAndChartButtonBox = createYearComboBoxAndChartButtonBox();
+
+        VBox transactionTableContentBox = createTransactionTableContentBox();
+
+        VBox.setVgrow(transactionTableContentBox, Priority.ALWAYS);
+
+        transactionsTableSummaryVBox.getChildren().addAll(
+                yearComboBoxAndChartButtonBox,
+                transactionTableContentBox
+        );
+
+        // recent transaction at the right
         VBox recentTransactionsVBox = createRecentTransactionsVBox();
 
         recentTransactionsVBox.getStyleClass().addAll("field-background", "rounded-border", "padding-10px");
 
         GridPane.setVgrow(recentTransactionsVBox, Priority.ALWAYS);
 
+        gridPane.add(transactionsTableSummaryVBox, 0, 0);
         gridPane.add(recentTransactionsVBox, 1, 0);
 
         return gridPane;
+    }
+
+    private HBox createYearComboBoxAndChartButtonBox() {
+
+        HBox yearComboBoxAndChartButtonBox = new HBox(15);
+
+        yearComboBox = new ComboBox<>();
+
+        yearComboBox.getStyleClass().addAll("text-size-md");
+        yearComboBox.setValue(Year.now().getValue());
+
+        viewChartButton = new Button("View Chart");
+
+        viewChartButton.getStyleClass().addAll("field-background", "text-white", "text-size-md");
+
+        yearComboBoxAndChartButtonBox.getChildren().addAll(yearComboBox, viewChartButton);
+
+        return yearComboBoxAndChartButtonBox;
+    }
+
+    private VBox createTransactionTableContentBox() {
+
+        VBox transactionTableContentBox = new VBox();
+
+        transactionTable = new TableView<>();
+
+        VBox.setVgrow(transactionTable, Priority.ALWAYS);
+
+        monthlyColumn = new TableColumn<>("Month");
+
+        monthlyColumn.setCellValueFactory(new PropertyValueFactory<>("month"));
+        monthlyColumn.getStyleClass().addAll("main-background", "text-size-md", "text-light-gray");
+
+        incomeColumn = new TableColumn<>("Income");
+
+        incomeColumn.setCellValueFactory(new PropertyValueFactory<>("income"));
+        incomeColumn.getStyleClass().addAll("main-background", "text-size-md", "text-light-gray");
+
+        expenseColumn = new TableColumn<>("Expense");
+
+        expenseColumn.setCellValueFactory(new PropertyValueFactory<>("expense"));
+        expenseColumn.getStyleClass().addAll("main-background", "text-size-md", "text-light-gray");
+
+        transactionTable.getColumns().addAll(
+                monthlyColumn,
+                incomeColumn,
+                expenseColumn
+        );
+
+        transactionTableContentBox.getChildren().addAll(transactionTable);
+
+        resizeTableWidthColumns();
+
+        return transactionTableContentBox;
     }
 
     private VBox createRecentTransactionsVBox() {
@@ -168,6 +258,24 @@ public class DashboardView {
         return rescentTransationsVBox;
     }
 
+    private void resizeTableWidthColumns(){
+
+        Platform.runLater(new Runnable() {
+
+            @Override
+            public void run() {
+
+                double colsWidth = transactionTable.getWidth() * (0.335);
+
+                monthlyColumn.setPrefWidth(colsWidth);
+
+                incomeColumn.setPrefWidth(colsWidth);
+
+                expenseColumn.setPrefWidth(colsWidth);
+            }
+        });
+    }
+
     private MenuBar createMenuBar() {
 
         MenuBar menuBar = new MenuBar();
@@ -178,10 +286,12 @@ public class DashboardView {
 
         createCategoryMenuItem = new MenuItem("Create Category");
         viewCategoriesMenuItem = new MenuItem("View Categories");
+        logoutMenuItem = new MenuItem("Logout");
 
         fileMenu.getItems().addAll(
                 createCategoryMenuItem,
-                viewCategoriesMenuItem
+                viewCategoriesMenuItem,
+                logoutMenuItem
         );
 
         menuBar.getMenus().addAll(fileMenu);
@@ -288,5 +398,53 @@ public class DashboardView {
 
     public void setLoadAnimationPane(LoadAnimationPane loadAnimationPane) {
         this.loadAnimationPane = loadAnimationPane;
+    }
+
+    public MenuItem getLogoutMenuItem() {
+        return logoutMenuItem;
+    }
+
+    public void setLogoutMenuItem(MenuItem logoutMenuItem) {
+        this.logoutMenuItem = logoutMenuItem;
+    }
+
+    public TableView<MonthlyFinance> getTransactionTable() {
+        return transactionTable;
+    }
+
+    public void setTransactionTable(TableView<MonthlyFinance> transactionTable) {
+        this.transactionTable = transactionTable;
+    }
+
+    public TableColumn<MonthlyFinance, String> getMonthlyColumn() {
+        return monthlyColumn;
+    }
+
+    public void setMonthlyColumn(TableColumn<MonthlyFinance, String> monthlyColumn) {
+        this.monthlyColumn = monthlyColumn;
+    }
+
+    public TableColumn<MonthlyFinance, BigDecimal> getIncomeColumn() {
+        return incomeColumn;
+    }
+
+    public void setIncomeColumn(TableColumn<MonthlyFinance, BigDecimal> incomeColumn) {
+        this.incomeColumn = incomeColumn;
+    }
+
+    public TableColumn<MonthlyFinance, BigDecimal> getExpenseColumn() {
+        return expenseColumn;
+    }
+
+    public void setExpenseColumn(TableColumn<MonthlyFinance, BigDecimal> expenseColumn) {
+        this.expenseColumn = expenseColumn;
+    }
+
+    public ComboBox<Integer> getYearComboBox() {
+        return yearComboBox;
+    }
+
+    public void setYearComboBox(ComboBox<Integer> yearComboBox) {
+        this.yearComboBox = yearComboBox;
     }
 }

@@ -15,8 +15,6 @@ public class Main extends Application {
 
         ViewNavigator.setMainStage(stage);
 
-//        new LoginView().show();
-
-        new DashboardView("koo@gmail.com").show();
+        new LoginView().show();
     }
 }

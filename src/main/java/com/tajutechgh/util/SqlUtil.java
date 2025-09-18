@@ -442,4 +442,55 @@ public class SqlUtil {
 
         return false;
     }
+
+    //list recent transactions by a user in a year
+    public static List<Transaction> getAllTransactionByUserInYear(int userId, int year){
+
+        List<Transaction> transactions = new ArrayList<>();
+
+        HttpURLConnection conn = null;
+
+        try{
+
+            conn = ApiUtil.fetchApi("/api/v1/transactions/user-year/" + userId + "?year=" + year, ApiUtil.RequestMethod.GET, null);
+
+            if (conn.getResponseCode() != 200){
+
+                System.out.println("Error (getAllTransactionsByUserInYear()) " + conn.getResponseCode());
+
+                return null;
+            }
+
+            String results = ApiUtil.readApiResponse(conn);
+
+            JsonArray resultJsonArray = new JsonParser().parse(results).getAsJsonArray();
+
+            for (JsonElement jsonElement : resultJsonArray){
+
+                Integer id = jsonElement.getAsJsonObject().get("id").getAsInt();
+                Integer transactionCategoryId = jsonElement.getAsJsonObject().get("categoryId").getAsInt();
+                String transactionName = jsonElement.getAsJsonObject().get("transactionName").getAsString();
+                double transactionAmount = jsonElement.getAsJsonObject().get("transactionAmount").getAsDouble();
+                LocalDate transactionDate = LocalDate.parse(jsonElement.getAsJsonObject().get("transactionDate").getAsString());
+                String transactionType = jsonElement.getAsJsonObject().get("transactionType").getAsString();
+
+                transactions.add(new Transaction(id, transactionCategoryId, transactionName, transactionAmount, transactionDate, transactionType));
+            }
+
+            return transactions;
+
+        }catch (IOException exception){
+
+            exception.printStackTrace();
+
+        }finally {
+
+            if (conn != null){
+
+                conn.disconnect();
+            }
+        }
+
+        return null;
+    }
 }

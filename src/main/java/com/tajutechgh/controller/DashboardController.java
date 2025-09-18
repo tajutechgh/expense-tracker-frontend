@@ -4,13 +4,20 @@ import com.component.TransactionComponent;
 import com.dialog.CreateNewCategoryDialog;
 import com.dialog.CreateOrEditTransactionDialog;
 import com.dialog.ViewOrEditTransactionCategoryDialog;
+import com.model.MonthlyFinance;
 import com.model.Transaction;
 import com.model.User;
 import com.tajutechgh.util.SqlUtil;
 import com.tajutechgh.view.DashboardView;
+import com.tajutechgh.view.LoginView;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 
 public class DashboardController {
@@ -22,12 +29,16 @@ public class DashboardController {
     private DashboardView dashboardView;
 
     private int currentPageNum;
+    private int currentYear;
 
     private List<Transaction> recentTransactions;
+    private List<Transaction> allTransactionsByYear;
 
     public DashboardController(DashboardView dashboardView) {
 
         this.dashboardView = dashboardView;
+
+        currentYear = dashboardView.getYearComboBox().getValue();
 
         fetchUserData();
 
@@ -44,6 +55,12 @@ public class DashboardController {
 
         user = SqlUtil.getUserByEmail(dashboardView.getEmail());
 
+        // get transactions for the year
+        allTransactionsByYear = SqlUtil.getAllTransactionByUserInYear(user.getId(), currentYear);
+
+        dashboardView.getTransactionTable().setItems(calculateMonthlyFinances());
+
+        // get recent transactions by user
         createRecentTransactionsComponent();
 
         new Thread(new Runnable() {
@@ -87,6 +104,44 @@ public class DashboardController {
         addRecentTransactionActions();
     }
 
+    private ObservableList<MonthlyFinance> calculateMonthlyFinances(){
+
+        double[] incomeCounter = new double[12];
+        double[] expenseCounter = new double[12];
+
+        for (Transaction transactionByYear : allTransactionsByYear){
+
+            LocalDate transactionDate = transactionByYear.getTransactionDate();
+
+            if (transactionByYear.getTransactionTyper().equalsIgnoreCase("income")){
+
+                incomeCounter[transactionDate.getMonth().getValue() - 1] += transactionByYear.getTransactionAmount();
+
+            }else {
+
+                expenseCounter[transactionDate.getMonth().getValue() - 1] += transactionByYear.getTransactionAmount();
+            }
+        }
+
+        ObservableList<MonthlyFinance> monthlyFinances = FXCollections.observableArrayList();
+
+        for (int i = 0; i < 12; i++){
+
+            MonthlyFinance monthlyFinance = new MonthlyFinance(
+
+                    Month.of(i + 1).name(),
+
+                    new BigDecimal(String.valueOf(incomeCounter[i])),
+
+                    new BigDecimal(String.valueOf(expenseCounter[i]))
+            );
+
+            monthlyFinances.add(monthlyFinance);
+        }
+
+        return monthlyFinances;
+    }
+
     private void addMenuActions() {
 
         dashboardView.getCreateteCategoryMenuItem().setOnAction(new EventHandler<ActionEvent>() {
@@ -104,6 +159,15 @@ public class DashboardController {
             public void handle(ActionEvent actionEvent) {
 
                 new ViewOrEditTransactionCategoryDialog(user, DashboardController.this).showAndWait();
+            }
+        });
+
+        dashboardView.getLogoutMenuItem().setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+                new LoginView().show();
             }
         });
     }

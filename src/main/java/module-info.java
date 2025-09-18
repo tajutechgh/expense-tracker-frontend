@@ -5,5 +5,8 @@ module expense.tracker.frontend {
     requires com.google.gson;
     requires javafx.graphics;
 
+    // make it possible to read data from models and store them in the table
+    opens com.model to javafx.base;
+
     exports com.tajutechgh;
 }
