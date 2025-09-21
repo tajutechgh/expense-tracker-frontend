@@ -444,15 +444,22 @@ public class SqlUtil {
     }
 
     //list recent transactions by a user in a year
-    public static List<Transaction> getAllTransactionByUserInYear(int userId, int year){
+    public static List<Transaction> getAllTransactionByUserInYear(int userId, int year,  Integer month){
 
         List<Transaction> transactions = new ArrayList<>();
 
         HttpURLConnection conn = null;
 
+        String apiPath = "/api/v1/transactions/user-year/" + userId + "?year=" + year;
+
+        if (month != null){
+
+            apiPath =   "/api/v1/transactions/user-year/" + userId + "?year=" + year + "&month=" + month;
+        }
+
         try{
 
-            conn = ApiUtil.fetchApi("/api/v1/transactions/user-year/" + userId + "?year=" + year, ApiUtil.RequestMethod.GET, null);
+            conn = ApiUtil.fetchApi(apiPath, ApiUtil.RequestMethod.GET, null);
 
             if (conn.getResponseCode() != 200){
 
@@ -478,6 +485,52 @@ public class SqlUtil {
             }
 
             return transactions;
+
+        }catch (IOException exception){
+
+            exception.printStackTrace();
+
+        }finally {
+
+            if (conn != null){
+
+                conn.disconnect();
+            }
+        }
+
+        return null;
+    }
+
+    //list distinct transaction years by a user
+    public static List<Integer> getAllTransactionDistinctYears(int userId){
+
+        List<Integer> distinctTransactionYears = new ArrayList<>();
+
+        HttpURLConnection conn = null;
+
+        try{
+
+            conn = ApiUtil.fetchApi("/api/v1/transactions/distinct/years/" + userId, ApiUtil.RequestMethod.GET, null);
+
+            if (conn.getResponseCode() != 200){
+
+                System.out.println("Error (getDistinctTransactionYears()) " + conn.getResponseCode());
+
+                return null;
+            }
+
+            String results = ApiUtil.readApiResponse(conn);
+
+            JsonArray resultJsonArray = new JsonParser().parse(results).getAsJsonArray();
+
+            for (int i = 0; i < resultJsonArray.size(); i++){
+
+                int year = resultJsonArray.get(i).getAsInt();
+
+                distinctTransactionYears.add(year);
+            }
+
+            return distinctTransactionYears;
 
         }catch (IOException exception){
 

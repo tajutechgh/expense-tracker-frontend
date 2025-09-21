@@ -135,6 +135,9 @@ public class TransactionComponent extends HBox {
 
                     ((VBox) getParent()).getChildren().remove(TransactionComponent.this);
                 }
+
+                // refresh data
+                dashboardController.fetchUserData();
             }
         });
 
