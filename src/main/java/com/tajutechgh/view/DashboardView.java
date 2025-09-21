@@ -447,4 +447,28 @@ public class DashboardView {
     public void setYearComboBox(ComboBox<Integer> yearComboBox) {
         this.yearComboBox = yearComboBox;
     }
+
+    public Label getTotalExpense() {
+        return totalExpense;
+    }
+
+    public void setTotalExpense(Label totalExpense) {
+        this.totalExpense = totalExpense;
+    }
+
+    public Label getTotalIncome() {
+        return totalIncome;
+    }
+
+    public void setTotalIncome(Label totalIncome) {
+        this.totalIncome = totalIncome;
+    }
+
+    public Label getCurrentBalance() {
+        return currentBalance;
+    }
+
+    public void setCurrentBalance(Label currentBalance) {
+        this.currentBalance = currentBalance;
+    }
 }

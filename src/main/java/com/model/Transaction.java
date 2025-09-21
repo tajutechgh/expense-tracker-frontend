@@ -9,19 +9,19 @@ public class Transaction {
     private String transactionName;
     private double transactionAmount;
     private LocalDate transactionDate;
-    private String transactionTyper;
+    private String transactionType;
 
     public Transaction(){
 
     }
 
-    public Transaction(Integer id, Integer transactionCategoryId, String transactionName, double transactionAmount, LocalDate transactionDate, String transactionTyper) {
+    public Transaction(Integer id, Integer transactionCategoryId, String transactionName, double transactionAmount, LocalDate transactionDate, String transactionType) {
         this.id = id;
         this.transactionCategoryId = transactionCategoryId;
         this.transactionName = transactionName;
         this.transactionAmount = transactionAmount;
         this.transactionDate = transactionDate;
-        this.transactionTyper = transactionTyper;
+        this.transactionType = transactionType;
     }
 
     public Integer getId() {
@@ -64,11 +64,11 @@ public class Transaction {
         this.transactionDate = transactionDate;
     }
 
-    public String getTransactionTyper() {
-        return transactionTyper;
+    public String getTransactionType() {
+        return transactionType;
     }
 
-    public void setTransactionTyper(String transactionTyper) {
-        this.transactionTyper = transactionTyper;
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
     }
 }

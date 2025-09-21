@@ -21,6 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
@@ -65,6 +66,8 @@ public class DashboardController {
 
         calculateDistinctYears();
 
+        calculateBalanceAndIncomeAndExpense();
+
         dashboardView.getTransactionTable().setItems(calculateMonthlyFinances());
 
         // get recent transactions by user
@@ -102,6 +105,42 @@ public class DashboardController {
         }
     }
 
+    private void calculateBalanceAndIncomeAndExpense(){
+
+        BigDecimal totalIncome = BigDecimal.ZERO;
+        BigDecimal totalExpense = BigDecimal.ZERO;
+
+        // calculate the total income and total expense
+        if(allTransactionsByYear != null){
+
+            for(Transaction transaction : allTransactionsByYear){
+
+                BigDecimal transactionAmount = BigDecimal.valueOf(transaction.getTransactionAmount());
+
+                if(transaction.getTransactionType().equalsIgnoreCase("income")){
+
+                    totalIncome = totalIncome.add(transactionAmount);
+
+                }else{
+
+                    totalExpense = totalExpense.add(transactionAmount);
+                }
+            }
+        }
+
+        // round up to 2 decimal places
+        totalIncome = totalIncome.setScale(2, RoundingMode.HALF_UP);
+        totalExpense = totalExpense.setScale(2, RoundingMode.HALF_UP);
+
+        BigDecimal currentBalance = totalIncome.subtract(totalExpense);
+        currentBalance = currentBalance.setScale(2, RoundingMode.HALF_UP);
+
+        // update view
+        dashboardView.getTotalExpense().setText("$" + totalExpense);
+        dashboardView.getTotalIncome().setText("$" + totalIncome);
+        dashboardView.getCurrentBalance().setText("$" + currentBalance);
+    }
+
     private void createRecentTransactionsComponent(){
 
         recentTransactions = SqlUtil.getRecentTransactionByUser(user.getId(), currentPageNum, recentTransactionPageSize);
@@ -137,7 +176,7 @@ public class DashboardController {
 
             LocalDate transactionDate = transactionByYear.getTransactionDate();
 
-            if (transactionByYear.getTransactionTyper().equalsIgnoreCase("income")){
+            if (transactionByYear.getTransactionType().equalsIgnoreCase("income")){
 
                 incomeCounter[transactionDate.getMonth().getValue() - 1] += transactionByYear.getTransactionAmount();
 

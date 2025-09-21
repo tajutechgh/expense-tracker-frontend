@@ -139,7 +139,7 @@ public class CreateOrEditTransactionDialog extends CustomDialog {
 
             Transaction transaction = transactionComponent.getTransaction();
 
-            if (transaction.getTransactionTyper().equalsIgnoreCase("income")){
+            if (transaction.getTransactionType().equalsIgnoreCase("income")){
 
                 incomeRadioButton.setSelected(true);
 
