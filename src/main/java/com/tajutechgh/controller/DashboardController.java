@@ -25,7 +25,7 @@ import java.util.List;
 
 public class DashboardController {
 
-    private final int recentTransactionPageSize = 5;
+    private final int recentTransactionPageSize = 100;
 
     private User user;
 

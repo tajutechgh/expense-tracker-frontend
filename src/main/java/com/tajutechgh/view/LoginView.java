@@ -32,7 +32,7 @@ public class LoginView {
 
     private Scene creatScene() {
 
-        VBox mainContainerBox = new VBox();
+        VBox mainContainerBox = new VBox(50);
 
         mainContainerBox.getStyleClass().addAll("main-background");
         mainContainerBox.setAlignment(Pos.TOP_CENTER);

@@ -8,6 +8,7 @@ import com.tajutechgh.util.ViewNavigator;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -306,6 +307,8 @@ public class DashboardView {
         balanceSummaryBox.getStyleClass().addAll("padding-top");
 
         VBox currentBalanceBox = new VBox();
+        currentBalanceBox.setStyle("-fx-border-width: 3px;  -fx-border-color: magenta; -fx-padding: 10px; -fx-background-color: magenta;");
+        currentBalanceBox.setAlignment(Pos.CENTER);
 
         currentBalanceLabel.getStyleClass().addAll("text-size-lg", "text-light-gray");
         currentBalance.getStyleClass().addAll("text-size-lg", "text-white");
@@ -319,6 +322,8 @@ public class DashboardView {
         HBox.setHgrow(region1, Priority.ALWAYS);
 
         VBox totalIncomeBox = new VBox();
+        totalIncomeBox.setStyle("-fx-border-width: 3px;  -fx-border-color: magenta; -fx-padding: 10px; -fx-background-color: magenta;");
+        totalIncomeBox.setAlignment(Pos.CENTER);
 
         totalIncomeLabel.getStyleClass().addAll("text-size-lg", "text-light-gray");
         totalIncome.getStyleClass().addAll("text-size-lg", "text-white");
@@ -332,6 +337,8 @@ public class DashboardView {
         HBox.setHgrow(region2, Priority.ALWAYS);
 
         VBox totalExpenseBox = new VBox();
+        totalExpenseBox.setStyle("-fx-border-width: 3px;  -fx-border-color: magenta; -fx-padding: 10px; -fx-background-color: magenta;");
+        totalExpenseBox.setAlignment(Pos.CENTER);
 
         totalExpenseLabel.getStyleClass().addAll("text-size-lg", "text-light-gray");
         totalExpense.getStyleClass().addAll("text-size-lg", "text-white");
