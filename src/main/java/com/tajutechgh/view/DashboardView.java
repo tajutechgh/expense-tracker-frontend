@@ -471,4 +471,12 @@ public class DashboardView {
     public void setCurrentBalance(Label currentBalance) {
         this.currentBalance = currentBalance;
     }
+
+    public Button getViewChartButton() {
+        return viewChartButton;
+    }
+
+    public void setViewChartButton(Button viewChartButton) {
+        this.viewChartButton = viewChartButton;
+    }
 }

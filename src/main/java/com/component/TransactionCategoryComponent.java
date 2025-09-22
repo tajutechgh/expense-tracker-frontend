@@ -79,6 +79,9 @@ public class TransactionCategoryComponent extends HBox {
 
                 //update transaction category
                 SqlUtil.updateTransactionCategory(transactionCategory.getId(), categoryName, categoryColor);
+
+                // refresh the dashboard data
+                dashboardController.fetchUserData();
             }
         });
 
@@ -100,6 +103,9 @@ public class TransactionCategoryComponent extends HBox {
 
                     ((VBox) getParent()).getChildren().remove(TransactionCategoryComponent.this);
                 }
+
+                // refresh the dashboard data
+                dashboardController.fetchUserData();
             }
         });
 

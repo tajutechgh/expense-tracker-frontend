@@ -1,10 +1,7 @@
 package com.tajutechgh.controller;
 
 import com.component.TransactionComponent;
-import com.dialog.CreateNewCategoryDialog;
-import com.dialog.CreateOrEditTransactionDialog;
-import com.dialog.ViewOrEditTransactionCategoryDialog;
-import com.dialog.ViewTransactionDialog;
+import com.dialog.*;
 import com.model.MonthlyFinance;
 import com.model.Transaction;
 import com.model.User;
@@ -164,6 +161,8 @@ public class DashboardController {
 
         addComboBoxActions();
 
+        addViewChartAction();
+
         addTableActions();
     }
 
@@ -259,6 +258,18 @@ public class DashboardController {
 
                 // refresh the data
                 fetchUserData();
+            }
+        });
+    }
+
+    private void addViewChartAction() {
+
+        dashboardView.getViewChartButton().setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+                new ViewChartDialog(user, dashboardView.getTransactionTable().getItems()).showAndWait();
             }
         });
     }

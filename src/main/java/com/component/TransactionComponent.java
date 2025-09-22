@@ -156,4 +156,36 @@ public class TransactionComponent extends HBox {
     public void setTransaction(Transaction transaction) {
         this.transaction = transaction;
     }
+
+    public Label getTransactionCategoryLabel() {
+        return transactionCategoryLabel;
+    }
+
+    public void setTransactionCategoryLabel(Label transactionCategoryLabel) {
+        this.transactionCategoryLabel = transactionCategoryLabel;
+    }
+
+    public Label getTransactionNameLabel() {
+        return transactionNameLabel;
+    }
+
+    public void setTransactionNameLabel(Label transactionNameLabel) {
+        this.transactionNameLabel = transactionNameLabel;
+    }
+
+    public Label getTransactionDateLabel() {
+        return transactionDateLabel;
+    }
+
+    public void setTransactionDateLabel(Label transactionDateLabel) {
+        this.transactionDateLabel = transactionDateLabel;
+    }
+
+    public Label getTransactionAmountLabel() {
+        return transactionAmountLabel;
+    }
+
+    public void setTransactionAmountLabel(Label transactionAmountLabel) {
+        this.transactionAmountLabel = transactionAmountLabel;
+    }
 }

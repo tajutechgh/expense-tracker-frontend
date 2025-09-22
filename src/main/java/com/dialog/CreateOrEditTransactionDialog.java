@@ -203,6 +203,7 @@ public class CreateOrEditTransactionDialog extends CustomDialog {
 
                     SqlUtil.createTransaction(transactionDataObject);
 
+                    // refresh the dashboard data
                     dashboardController.fetchUserData();
 
                 }else {
@@ -211,7 +212,14 @@ public class CreateOrEditTransactionDialog extends CustomDialog {
 
                     SqlUtil.updateTransaction(transactionId, transactionDataObject);
 
+                    // refresh the dashboard data
                     dashboardController.fetchUserData();
+
+                    // refresh the transaction component
+                    transactionComponent.getTransactionCategoryLabel().setText(transactionCategoryName);
+                    transactionComponent.getTransactionNameLabel().setText(transactionName);
+                    transactionComponent.getTransactionDateLabel().setText(transactionDate.toString());
+                    transactionComponent.getTransactionAmountLabel().setText(String.valueOf(transactionAmount));
                 }
             }
         });

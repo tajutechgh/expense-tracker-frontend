@@ -4,11 +4,11 @@
     -fx-border-color: #fff;
 } */
 
-VBox {
+/*VBox {
     -fx-border-width: 3px;
     -fx-border-color: #cccccc;
     -fx-padding: 10px;
-}
+}*/
 
 /*GridPane {
     -fx-border-width: 1px;
@@ -62,8 +62,17 @@ ScrollPane > .viewport {
    -fx-pref-height: 0;
 }
 
-.padding-top{
-   -fx-padding: 15;
+/* bar chart */
+.axis-label{
+  -fx-text-fill: #BEB9B9;
+}
+
+.default-color0.chart-legend-item-symbol{
+  -fx-background-color: #33ba2f;
+}
+
+.default-color1.chart-legend-item-symbol{
+  -fx-background-color: #ba2f2f;
 }
 
 /* text */
@@ -97,6 +106,10 @@ ScrollPane > .viewport {
 
 .text-weight-700{
     -fx-font-weight: 700;
+}
+
+.padding-top{
+   -fx-padding: 15;
 }
 
 /* background colors */
